@@ -30,7 +30,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -101,8 +103,10 @@ public class S2STestService {
             // Wait for success or exceed socket timeout.
             waitUntil.tryAcquire( RemoteServerManager.getSocketTimeout(), TimeUnit.MILLISECONDS );
 
+            // Check on the connection status.
+            logSessionStatus();
+
             // Prepare response.
-            results.put( "status", getSessionStatus());
             results.put( "certs", getCertificates() );
             results.put( "stanzas", interceptor.toString() );
             results.put( "logs", logs.toString() );
@@ -150,26 +154,13 @@ public class S2STestService {
     /**
      * Logs the status of the session.
      */
-    private String getSessionStatus() {
+    private void logSessionStatus() {
         final DomainPair pair = new DomainPair(XMPPServer.getInstance().getServerInfo().getXMPPDomain(), domain);
         OutgoingServerSession session = XMPPServer.getInstance().getSessionManager().getOutgoingServerSession(pair);
         if (session != null) {
-            int connectionStatus = session.getStatus();
-            switch(connectionStatus) {
-                case Session.STATUS_CONNECTED:
-                    Log.info("Session is connected.");
-                    return "Connected";
-                case Session.STATUS_CLOSED:
-                    Log.info("Session is closed.");
-                    return "Closed";
-                case Session.STATUS_AUTHENTICATED:
-                    Log.info("Session is authenticated.");
-                    return "Authenticated";
-            }
-            return "Unknown";
+            Log.info("Session is {}.", session.getStatus());
         } else {
             Log.info("Failed to establish server to server session.");
-            return "Failed";
         }
     }
 

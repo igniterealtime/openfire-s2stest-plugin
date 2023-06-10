@@ -1,5 +1,12 @@
 package org.igniterealtime.openfire.s2stest;
 
+/*
+
+This entire file is almost entirely copied from the S2STestService in Openfire, from the following location:
+/xmppserver/src/main/java/org/jivesoftware/util/S2STestService.java
+
+ */
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Filter;

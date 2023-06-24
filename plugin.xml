@@ -2,13 +2,11 @@
 
 <plugin>
    <class>org.igniterealtime.openfire.s2stest.S2STestPlugin</class>
-   <name>S2S Test Plugin</name>
-   <description>Plugin to test successful and unsuccessful connections to other servers via S2S</description>
+   <name>${project.name}</name>
+   <description>${project.description}</description>
    <author>Dan Caseley</author>
-   <version>1.0.0-SNAPSHOT</version>
-   <date>21/12/2022</date>
-   <minServerVersion>4.7.0</minServerVersion>
-    <!-- And if it won't work after:
-   <maxServerVersion>4.3.0</maxServerVersion>
-   -->
+   <version>${project.version}</version>
+   <date>2023-06-24</date>
+   <minServerVersion>4.8.0-SNAPSHOT</minServerVersion>
+    <minJavaVersion>11</minJavaVersion>
 </plugin>

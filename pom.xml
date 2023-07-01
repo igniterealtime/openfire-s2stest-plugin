@@ -21,9 +21,27 @@
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <finalName>${project.artifactId}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <!-- Repository in which we deploy this project, when desired. -->
+        <repository>
+            <id>igniterealtime</id>
+            <name>Ignite Realtime Repository</name>
+            <url>https://www.igniterealtime.org/archiva/repository/maven/</url>
+        </repository>
+    </distributionManagement>
 
     <repositories>
         <repository>

@@ -1,4 +1,4 @@
-package org.igniterealtime.openfire.s2stest;
+package org.igniterealtime.openfire.s2sconformancetest;
 
 /*
 

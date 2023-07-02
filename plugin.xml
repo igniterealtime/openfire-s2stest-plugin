@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin>
-   <class>org.igniterealtime.openfire.s2stest.S2STestPlugin</class>
+   <class>org.igniterealtime.openfire.s2sconformancetest.S2STestPlugin</class>
    <name>${project.name}</name>
    <description>${project.description}</description>
    <author>Dan Caseley</author>
    <version>${project.version}</version>
    <date>2023-06-24</date>
    <minServerVersion>4.8.0-SNAPSHOT</minServerVersion>
-    <minJavaVersion>11</minJavaVersion>
+   <minJavaVersion>11</minJavaVersion>
+   <adminconsole>
+       <tab id="tab-server">
+           <sidebar id="sidebar-server-settings">
+               <item id="test"
+                     url="tests.jsp"
+                     name="S2S Test"
+                     description="Click to run S2S connection tests"
+               />
+           </sidebar>
+       </tab>
+    </adminconsole>
+
+    <csrfProtectionEnabled>true</csrfProtectionEnabled>
 </plugin>

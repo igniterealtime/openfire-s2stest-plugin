@@ -12,7 +12,7 @@
    <adminconsole>
        <tab id="tab-server">
            <sidebar id="sidebar-server-settings">
-               <item id="test"
+               <item id="tests"
                      url="tests.jsp"
                      name="S2S Test"
                      description="Click to run S2S connection tests"

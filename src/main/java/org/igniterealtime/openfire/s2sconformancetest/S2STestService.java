@@ -166,10 +166,10 @@ public class S2STestService {
         OutgoingServerSession session = XMPPServer.getInstance().getSessionManager().getOutgoingServerSession(pair);
         if (session != null) {
             Log.info("Session is {}.", session.getStatus());
-            //results.put("status", session.getStatus().toString());
+            results.put("status", session.getStatus().toString());
         } else {
             Log.info("Failed to establish server to server session.");
-            //results.put("status", "Failed");
+            results.put("status", "Failed");
         }
     }
 

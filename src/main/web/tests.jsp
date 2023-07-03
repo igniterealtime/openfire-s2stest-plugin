@@ -44,6 +44,7 @@
     <admin:FlashMessage/> <%-- In case of CSRF errors --%>
 
     <admin:contentBox title="Run Tests">
+        <admin:infoBox type="info">Be patient. This is going to take a couple of minutes.</admin:infoBox>
         <form action="tests.jsp" method="post">
             <input type="hidden" name="csrf" value="<c:out value="${csrf}"/>" >
             <input type="submit" name="<c:out value="${testModeLabel}"/>" value="Run Tests"/>
@@ -55,17 +56,22 @@
 
         %>
     <admin:contentBox title="Test Results">
-        <table>
+        <table style="width: 100%">
+            <tr>
+                <th>Domain</th>
+                <th>Expected</th>
+                <th>Actual</th>
+            </tr>
             <c:forEach items="${results.getSuccessfulResults()}" var="result">
                 <tr>
                     <td style="vertical-align: top">
                         <c:out value="${result.getDomain()}"/>
                     </td>
                     <td style="font-family: monospace;">
-                        Expected: Success
+                        Success
                     </td>
                     <td style="font-family: monospace;">
-                        Actual: <c:out value="${result.getResults().get('status')}"/>
+                        <c:out value="${result.getResults().get('status')}"/>
                     </td>
                 </tr>
             </c:forEach>
@@ -75,10 +81,10 @@
                         <c:out value="${result.getDomain()}"/>
                     </td>
                     <td style="font-family: monospace;">
-                        Expected: Failure
+                        Failure
                     </td>
                     <td style="font-family: monospace;">
-                        Actual: <c:out value="${result.getResults().get('status')}"/>
+                        <c:out value="${result.getResults().get('status')}"/>
                     </td>
                 </tr>
             </c:forEach>

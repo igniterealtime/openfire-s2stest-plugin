@@ -70,14 +70,18 @@ public class S2STestPlugin implements Plugin {
 
     }
 
-    public void runTests() throws Exception {
+    public S2STestResultRun runTests() throws Exception {
+        S2STestResultRun thisRun = new S2STestResultRun();
         for (String domain : getSuccessfulDomainsAsArray()) {
-            final Map<String, String> successfulResults = new S2STestService(domain).run();
-            Log.info("Domain: [{}] Result: [{}]", domain, successfulResults.get("status"));
+            final Map<String,String> thisResult = new S2STestService(domain).run();
+            Log.info("S2S Test Result - Domain: [{}] Result: [{}]", domain, thisResult.get("status"));
+            thisRun.addSuccessfulResult(new S2STestResult(domain, thisResult));
         }
         for (String domain : getUnsuccessfulDomainsAsArray()) {
-            final Map<String, String> unsuccessfulResults = new S2STestService(domain).run();
-            Log.info("Domain: [{}] Result: [{}]", domain, unsuccessfulResults.get("status"));
+            final Map<String,String> thisResult = new S2STestService(domain).run();
+            Log.info("S2S Test Result - Domain: [{}] Result: [{}]", domain, thisResult.get("status"));
+            thisRun.addUnsuccessfulResult(new S2STestResult(domain, thisResult));
         }
+        return thisRun;
     }
 }

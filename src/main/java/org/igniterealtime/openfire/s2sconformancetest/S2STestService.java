@@ -111,7 +111,7 @@ public class S2STestService {
             waitUntil.tryAcquire( RemoteServerManager.getSocketTimeout(), TimeUnit.MILLISECONDS );
 
             // Check on the connection status.
-            logSessionStatus();
+            logSessionStatus(results);
 
             // Prepare response.
             results.put( "certs", getCertificates() );
@@ -161,13 +161,15 @@ public class S2STestService {
     /**
      * Logs the status of the session.
      */
-    private void logSessionStatus() {
+    private void logSessionStatus(Map<String, String> results) {
         final DomainPair pair = new DomainPair(XMPPServer.getInstance().getServerInfo().getXMPPDomain(), domain);
         OutgoingServerSession session = XMPPServer.getInstance().getSessionManager().getOutgoingServerSession(pair);
         if (session != null) {
             Log.info("Session is {}.", session.getStatus());
+            //results.put("status", session.getStatus().toString());
         } else {
             Log.info("Failed to establish server to server session.");
+            //results.put("status", "Failed");
         }
     }
 

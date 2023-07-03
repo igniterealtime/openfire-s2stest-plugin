@@ -75,7 +75,7 @@
                     </td>
                 </tr>
             </c:forEach>
-            <c:forEach items="${results.getSuccessfulResults()}" var="result">
+            <c:forEach items="${results.getUnsuccessfulResults()}" var="result">
                 <tr>
                     <td style="vertical-align: top">
                         <c:out value="${result.getDomain()}"/>

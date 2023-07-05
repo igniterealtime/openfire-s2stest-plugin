@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class S2STestPlugin implements Plugin {
 
@@ -72,16 +74,38 @@ public class S2STestPlugin implements Plugin {
 
     public S2STestResultRun runTests() throws Exception {
         S2STestResultRun thisRun = new S2STestResultRun();
+        ArrayList<CompletableFuture<S2STestResult>> results = new ArrayList<>();
+
         for (String domain : getSuccessfulDomainsAsArray()) {
-            final Map<String,String> thisResult = new S2STestService(domain).run();
-            Log.info("S2S Test Result - Domain: [{}] Result: [{}]", domain, thisResult.get("status"));
-            thisRun.addSuccessfulResult(new S2STestResult(domain, thisResult));
+            results.add(makeFuture(domain, "success"));
         }
         for (String domain : getUnsuccessfulDomainsAsArray()) {
-            final Map<String,String> thisResult = new S2STestService(domain).run();
-            Log.info("S2S Test Result - Domain: [{}] Result: [{}]", domain, thisResult.get("status"));
-            thisRun.addUnsuccessfulResult(new S2STestResult(domain, thisResult));
+            results.add(makeFuture(domain, "failure"));
+        }
+
+        CompletableFuture.allOf(results.toArray(new CompletableFuture[0])).join();
+        for (CompletableFuture<S2STestResult> result : results) {
+            if(result.get().getExpectedResult().equals("success")) {
+                thisRun.addSuccessfulResult(result.get());
+            } else {
+                thisRun.addUnsuccessfulResult(result.get());
+            }
         }
         return thisRun;
     }
+
+    private CompletableFuture<S2STestResult> makeFuture(String domain, String expectedResult){
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return new S2STestService(domain).run();
+            } catch (Exception e) {
+                Log.error("Error running S2S test for domain [{}]", domain, e);
+                return null;
+            }
+        }).thenApply(result -> {
+            Log.info("S2S Test Result - Domain: [{}] Result: [{}]", domain, result.get("status"));
+            return new S2STestResult(domain, result, expectedResult);
+        });
+    }
+
 }

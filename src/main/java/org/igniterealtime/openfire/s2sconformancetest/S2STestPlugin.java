@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class S2STestPlugin implements Plugin {
@@ -45,7 +45,10 @@ public class S2STestPlugin implements Plugin {
     }
 
     public String[] getSuccessfulDomainsAsArray() {
-        return SUCCESSFUL_DOMAINS.getValue().split(",");
+        return Arrays.stream(SUCCESSFUL_DOMAINS.getValue().split(","))
+                .map(String::trim)
+                .filter(x -> !x.isEmpty())
+                .toArray(String[]::new);
     }
 
     public void setUnsuccessfulDomains(String unsuccessfulDomains) {
@@ -61,7 +64,10 @@ public class S2STestPlugin implements Plugin {
     }
 
     public String[] getUnsuccessfulDomainsAsArray() {
-        return UNSUCCESSFUL_DOMAINS.getValue().split(",");
+        return Arrays.stream(UNSUCCESSFUL_DOMAINS.getValue().split(","))
+                .map(String::trim)
+                .filter(x -> !x.isEmpty())
+                .toArray(String[]::new);
     }
 
     public void initializePlugin(PluginManager pluginManager, File file) {

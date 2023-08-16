@@ -20,7 +20,7 @@ public class S2STestPlugin implements Plugin {
     public static final SystemProperty<String> SUCCESSFUL_DOMAINS = SystemProperty.Builder.ofType(String.class)
             .setPlugin(pluginName)
             .setKey(pluginPropertyPrefix + "successful-domains")
-            .setDefaultValue("xsf.org")
+            .setDefaultValue("xmpp.org")
             .setDynamic(true)
             .build();
 

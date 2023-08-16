@@ -5,12 +5,10 @@ import java.util.Map;
 public class S2STestResult {
     private final String domain;
     private final Map<String,String> results;
-    private final String expectedResult;
 
-    public S2STestResult(String domain, Map<String,String> results, String expectedResult) {
+    public S2STestResult(String domain, Map<String,String> results) {
         this.domain = domain;
         this.results = results;
-        this.expectedResult = expectedResult;
     }
 
     public String getDomain() {
@@ -19,10 +17,6 @@ public class S2STestResult {
 
     public Map<String,String> getResults() {
         return results;
-    }
-
-    public String getExpectedResult() {
-        return expectedResult;
     }
 
 }

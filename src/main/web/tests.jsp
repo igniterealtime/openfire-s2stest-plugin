@@ -7,7 +7,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="org.igniterealtime.openfire.s2sconformancetest.S2STestResultRun" %>
 
-<%@ taglib uri="admin" prefix="admin" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
@@ -40,22 +39,34 @@
     <meta name="pageID" content="tests"/>
 </head>
 <body>
-
-    <admin:FlashMessage/> <%-- In case of CSRF errors --%>
-
-    <admin:contentBox title="Run Tests">
-        <admin:infoBox type="info">Be patient. This is going to take a couple of minutes.</admin:infoBox>
+    <div class="jive-contentBoxHeader">
+        <c:out value="Run Tests" />
+    </div>
+    <div class="jive-contentBox">
+        <div class="jive-info">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="jive-icon"><img src="/images/info-16x16.gif" alt=""/></td>
+                    <td class="jive-icon-label">Be patient. This is going to take a couple of minutes.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <form action="tests.jsp" method="post">
             <input type="hidden" name="csrf" value="<c:out value="${csrf}"/>" >
             <input type="submit" name="<c:out value="${testModeLabel}"/>" value="Run Tests"/>
         </form>
-    </admin:contentBox>
+    </div>
 
 
     <% if(testMode){
 
         %>
-    <admin:contentBox title="Test Results">
+    <div class="jive-contentBoxHeader">
+        <c:out value="Test Results" />
+    </div>
+    <div class="jive-contentBox">
         <table style="width: 100%">
             <tr>
                 <th>Domain</th>
@@ -89,18 +100,16 @@
                 </tr>
             </c:forEach>
         </table>
-    </admin:contentBox>
+    </div>
     <% } %>
 
 
 
-    <admin:contentBox title="Test Settings">
+    <div class="jive-contentBoxHeader">
+        <c:out value="Test Settings" />
+    </div>
+    <div class="jive-contentBox">
         <p>Edit these settings in <a href="/server-properties.jsp?searchPlugin=S2S+Conformance+Test">System Properties</a>.</p>
-
-        <table>
-            <tr><fmt</tr>
-        </table>
-
-    </admin:contentBox>
+    </div>
 </body>
 </html>

@@ -117,6 +117,7 @@ public class S2STestService {
             results.put( "certs", getCertificates() );
             results.put( "stanzas", interceptor.toString() );
             results.put( "logs", logs.toString() );
+            results.put( "software", getSoftwareInformation() );
 
             return results;
         }
@@ -208,6 +209,19 @@ public class S2STestService {
             }
         }
         return certs.toString();
+    }
+
+    private String getSoftwareInformation(){
+        final DomainPair pair = new DomainPair(XMPPServer.getInstance().getServerInfo().getXMPPDomain(), domain);
+        Session session = XMPPServer.getInstance().getSessionManager().getOutgoingServerSession(pair);
+        if(session == null){
+            return "";
+        }
+        StringBuilder software = new StringBuilder();
+        software.append(session.getSoftwareVersion().get("name"));
+        software.append(" ");
+        software.append(session.getSoftwareVersion().get("version"));
+        return software.toString();
     }
 
     /**

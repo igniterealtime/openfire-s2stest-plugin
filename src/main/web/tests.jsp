@@ -61,6 +61,7 @@
                 <th>Domain</th>
                 <th>Expected</th>
                 <th>Actual</th>
+                <th>Server Info</th>
             </tr>
             <c:forEach items="${results.getSuccessfulResults()}" var="result">
                 <tr>
@@ -72,6 +73,9 @@
                     </td>
                     <td style="font-family: monospace;">
                         <c:out value="${result.getResults().get('status')}"/>
+                    </td>
+                    <td>
+                        <c:out value="${result.getResults().get('software')}"/>
                     </td>
                 </tr>
             </c:forEach>
@@ -85,6 +89,9 @@
                     </td>
                     <td style="font-family: monospace;">
                         <c:out value="${result.getResults().get('status')}"/>
+                    </td>
+                    <td>
+                        <c:out value="${result.getResults().get('software')}"/>
                     </td>
                 </tr>
             </c:forEach>

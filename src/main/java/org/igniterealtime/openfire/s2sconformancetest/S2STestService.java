@@ -22,9 +22,7 @@ import org.jivesoftware.openfire.interceptor.InterceptorManager;
 import org.jivesoftware.openfire.interceptor.PacketInterceptor;
 import org.jivesoftware.openfire.interceptor.PacketRejectedException;
 import org.jivesoftware.openfire.server.RemoteServerManager;
-import org.jivesoftware.openfire.session.DomainPair;
-import org.jivesoftware.openfire.session.OutgoingServerSession;
-import org.jivesoftware.openfire.session.Session;
+import org.jivesoftware.openfire.session.*;
 import org.jivesoftware.util.StringUtils;
 import org.jivesoftware.util.cert.SANCertificateIdentityMapping;
 import org.slf4j.LoggerFactory;
@@ -42,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Runs server to server test.
@@ -212,16 +212,50 @@ public class S2STestService {
     }
 
     private String getSoftwareInformation(){
-        final DomainPair pair = new DomainPair(XMPPServer.getInstance().getServerInfo().getXMPPDomain(), domain);
-        Session session = XMPPServer.getInstance().getSessionManager().getOutgoingServerSession(pair);
-        if(session == null){
+        SessionManager sessionManager = XMPPServer.getInstance().getSessionManager();
+        List<IncomingServerSession> inSessions = sessionManager.getIncomingServerSessions(domain);
+        List<OutgoingServerSession> outSessions = sessionManager.getOutgoingServerSessions(domain);
+        if(inSessions.isEmpty() && outSessions.isEmpty()){
+            Log.debug("No sessions for " + domain);
             return "";
         }
-        StringBuilder software = new StringBuilder();
-        software.append(session.getSoftwareVersion().get("name"));
-        software.append(" ");
-        software.append(session.getSoftwareVersion().get("version"));
-        return software.toString();
+
+        Predicate<ServerSession> hasSoftwareInformation = s -> !s.getSoftwareVersion().isEmpty();
+        List<IncomingServerSession> inSessionsWithSoftwareInformation = inSessions.stream().filter(hasSoftwareInformation).collect(Collectors.toList());
+        List<OutgoingServerSession> outSessionsWithSoftwareInformation = outSessions.stream().filter(hasSoftwareInformation).collect(Collectors.toList());
+
+        if(inSessionsWithSoftwareInformation.isEmpty() && outSessionsWithSoftwareInformation.isEmpty()){
+            Log.debug("No sessions with software information for " + domain);
+            return "";
+        }
+
+
+        LocalSession session = (LocalSession) inSessionsWithSoftwareInformation.toArray()[0];
+        if (session != null && !session.getSoftwareVersion().isEmpty()){
+            Map<String,String> softwareVersioninfo = session.getSoftwareVersion();
+            if(!softwareVersioninfo.get("name").isEmpty()){
+                StringBuilder software = new StringBuilder();
+                software.append(softwareVersioninfo.get("name"));
+                software.append(" ");
+                software.append(softwareVersioninfo.get("version"));
+                return software.toString();
+            }
+        }
+
+        session = (LocalSession) outSessionsWithSoftwareInformation.toArray()[0];
+        if (session != null && !session.getSoftwareVersion().isEmpty()){
+            Map<String,String> softwareVersioninfo = session.getSoftwareVersion();
+            if(!softwareVersioninfo.get("name").isEmpty()){
+                StringBuilder software = new StringBuilder();
+                software.append(softwareVersioninfo.get("name"));
+                software.append(" ");
+                software.append(softwareVersioninfo.get("version"));
+                return software.toString();
+            }
+        }
+
+        Log.debug("No useful version info found for " + domain);
+        return "";
     }
 
     /**

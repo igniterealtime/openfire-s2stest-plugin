@@ -232,30 +232,30 @@ public class S2STestService {
 
         LocalSession session = (LocalSession) inSessionsWithSoftwareInformation.toArray()[0];
         if (session != null && !session.getSoftwareVersion().isEmpty()){
-            Map<String,String> softwareVersioninfo = session.getSoftwareVersion();
-            if(!softwareVersioninfo.get("name").isEmpty()){
-                StringBuilder software = new StringBuilder();
-                software.append(softwareVersioninfo.get("name"));
-                software.append(" ");
-                software.append(softwareVersioninfo.get("version"));
-                return software.toString();
-            }
+            String software = getSoftwareFromSession(session);
+            if (software != null) return software;
         }
 
         session = (LocalSession) outSessionsWithSoftwareInformation.toArray()[0];
         if (session != null && !session.getSoftwareVersion().isEmpty()){
-            Map<String,String> softwareVersioninfo = session.getSoftwareVersion();
-            if(!softwareVersioninfo.get("name").isEmpty()){
-                StringBuilder software = new StringBuilder();
-                software.append(softwareVersioninfo.get("name"));
-                software.append(" ");
-                software.append(softwareVersioninfo.get("version"));
-                return software.toString();
-            }
+            String software = getSoftwareFromSession(session);
+            if (software != null) return software;
         }
 
         Log.debug("No useful version info found for " + domain);
         return "";
+    }
+
+    private static String getSoftwareFromSession(LocalSession session) {
+        Map<String,String> softwareVersioninfo = session.getSoftwareVersion();
+        if(!softwareVersioninfo.get("name").isEmpty()){
+            StringBuilder software = new StringBuilder();
+            software.append(softwareVersioninfo.get("name"));
+            software.append(" ");
+            software.append(softwareVersioninfo.get("version"));
+            return software.toString();
+        }
+        return null;
     }
 
     /**

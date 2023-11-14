@@ -1,11 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<%@ page
-        import="org.jivesoftware.openfire.XMPPServer,
-           org.igniterealtime.openfire.s2sconformancetest.S2STestPlugin"
-%>
-<%@ page import="java.util.Map" %>
+<%@ page import="org.jivesoftware.openfire.XMPPServer" %>
 <%@ page import="org.igniterealtime.openfire.s2sconformancetest.S2STestResultRun" %>
+<%@ page import="org.igniterealtime.openfire.s2sconformancetest.S2STestPlugin" %>
 
 <%@ taglib uri="admin" prefix="admin" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -22,7 +19,7 @@
 
     S2STestPlugin plugin = (S2STestPlugin) XMPPServer.getInstance().getPluginManager().getPlugin("s2sconformancetest");
     if(testMode){
-        S2STestResultRun results = null;
+        S2STestResultRun results;
         try {
             results = plugin.runTests();
         } catch (Exception e) {
@@ -80,35 +77,35 @@
                     <th>Actual</th>
                     <th>Server Info</th>
                 </tr>
-                <c:forEach items="${results.getSuccessfulResults()}" var="result">
+                <c:forEach items="${results.successfulResults}" var="result">
                     <tr>
                         <td style="vertical-align: top">
-                            <c:out value="${result.getDomain()}"/>
+                            <c:out value="${result.domain}"/>
                         </td>
                         <td style="font-family: monospace;">
                             Success
                         </td>
                         <td style="font-family: monospace;">
-                            <c:out value="${result.getResults().get('status')}"/>
+                            <c:out value="${result.results['status']}"/>
                         </td>
                         <td>
-                            <c:out value="${result.getResults().get('software')}"/>
+                            <c:out value="${result.results['software']}"/>
                         </td>
                     </tr>
                 </c:forEach>
-                <c:forEach items="${results.getUnsuccessfulResults()}" var="result">
+                <c:forEach items="${results.unsuccessfulResults}" var="result">
                     <tr>
                         <td style="vertical-align: top">
-                            <c:out value="${result.getDomain()}"/>
+                            <c:out value="${result.domain}"/>
                         </td>
                         <td style="font-family: monospace;">
                             Failure
                         </td>
                         <td style="font-family: monospace;">
-                            <c:out value="${result.getResults().get('status')}"/>
+                            <c:out value="${result.results['status']}"/>
                         </td>
                         <td>
-                            <c:out value="${result.getResults().get('software')}"/>
+                            <c:out value="${result.results['software']}"/>
                         </td>
                     </tr>
                 </c:forEach>
@@ -120,11 +117,6 @@
 
     <admin:contentBox title="Test Settings">
         <p>Edit these settings in <a href="/server-properties.jsp?searchPlugin=S2S+Conformance+Test">System Properties</a>.</p>
-
-        <table>
-            <tr><fmt</tr>
-        </table>
-
     </admin:contentBox>
 </body>
 </html>

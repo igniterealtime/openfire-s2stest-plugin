@@ -72,7 +72,7 @@ public class S2STestService {
 
     private Semaphore waitUntil;
 
-    private String domain;
+    private final String domain;
 
     /**
      * @param domain The host to test.
@@ -279,7 +279,7 @@ public class S2STestService {
      * Packet interceptor for the duration of our S2S test.
      */
     private class S2SInterceptor implements PacketInterceptor {
-        private StringBuilder xml = new StringBuilder();
+        private final StringBuilder xml = new StringBuilder();
 
         private final IQ ping;
 

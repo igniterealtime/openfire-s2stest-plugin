@@ -12,7 +12,7 @@
 
     <groupId>org.igniterealtime.openfire.plugins</groupId>
     <artifactId>s2sconformancetest</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <name>S2S Conformance Test</name>
     <description>Plugin to test successful and unsuccessful connections to other servers via S2S</description>

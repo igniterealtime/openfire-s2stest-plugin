@@ -7,7 +7,7 @@
    <author>Dan Caseley</author>
    <version>${project.version}</version>
    <date>2023-06-24</date>
-   <minServerVersion>4.8.0-SNAPSHOT</minServerVersion>
+   <minServerVersion>4.8.0-beta</minServerVersion>
    <minJavaVersion>11</minJavaVersion>
    <adminconsole>
        <tab id="tab-server">

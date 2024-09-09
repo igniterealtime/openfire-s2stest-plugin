@@ -6,8 +6,8 @@
    <description>${project.description}</description>
    <author>Dan Caseley</author>
    <version>${project.version}</version>
-   <date>2023-11-30</date>
-   <minServerVersion>4.8.0-beta</minServerVersion>
+   <date>2024-09-09</date>
+   <minServerVersion>4.8.0</minServerVersion>
    <minJavaVersion>11</minJavaVersion>
    <adminconsole>
        <tab id="tab-server">
